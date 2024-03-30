@@ -40,11 +40,16 @@ ALTER TABLE hr
 MODIFY COLUMN hire_date DATE;
 
 UPDATE hr
-SET termdate = date(str_to_date(termdate, '%Y-%m-%d %H:%i:%s UTC'))
-WHERE termdate IS NOT NULL AND termdate != ' ';
+SET termdate = IF(termdate IS NOT NULL AND termdate != '', date(str_to_date(termdate, '%Y-%m-%d %H:%i:%s UTC')), '0000-00-00')
+WHERE true;
+
+SELECT termdate from hr;
+
+SET sql_mode = 'ALLOW_INVALID_DATES';
 
 ALTER TABLE hr
 MODIFY COLUMN termdate DATE;
+
 
 ALTER TABLE hr ADD COLUMN age INT;
 
